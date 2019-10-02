@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="hideSearchBox">Find address</ion-title>
+    <ion-buttons slot="primary" *ngIf="hideSearchBox">
+      <ion-button (click)="hideSearchBox = false">
+        <ion-icon slot="icon-only" slot="end" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-searchbar *ngIf="!hideSearchBox" animated inputmode="search" showCancelButton="focus"
+      placeholder="Search for a place" [(ngModel)]="searchInput" (ionInput)="updateListPlace()"
+      (ionClear)="searchInput = ''; autocompleteItems = []" (ionCancel)="hideSearchBox = true; autocompleteItems = []">
+    </ion-searchbar>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      <ion-text>
+        <strong> {{ item.main_text }}</strong> <small> {{ item.secondary_text }}</small>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding" style="height: 100%">
+    <h3>Ionic GoogleMaps Demo</h3>
+    <ion-button color="light" (click)="getUserPosition()">Light</ion-button>
+    <agm-map [latitude]="lat" [longitude]="lng" [minZoom]="15" [maxZoom]="18" [zoom]="17" [tilt]="45">
+      <agm-marker [animation]="'BOUNCE'" [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+  </div>
+</ion-content>
